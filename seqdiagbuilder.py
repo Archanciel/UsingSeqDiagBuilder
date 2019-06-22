@@ -987,8 +987,8 @@ class SeqDiagBuilder:
     def _extractToClassMethodInformation(moduleClassNameList, packageSpec, moduleName, methodName):
         '''
         This method returns informations specific to the target class and method, namely, the name
-        of the class supporting methodName, its seqdiag note, the target method return type,
-        the target method return note, the method signature and its seqdiag note.
+        of the class supporting methodName, the class seqdiag note, the target method return type,
+        the target method seqdiag return note, the method signature and the method seqdiag note.
 
         Normally, only one class supporting methodName should be found in moduleName. If more
         than one class are found, this indicates that the module contains a class hierarchy with
@@ -1036,6 +1036,10 @@ class SeqDiagBuilder:
                     methodObj = methodTupple[1]
                     methodSignature = str(signature(methodObj))
                     methodDoc = methodObj.__doc__
+                    methodBodyLines = inspect.getsourcelines(methodObj)
+
+                    for line in methodBodyLines:
+                        methodBodyComments = inspect.getcomments(methodObj)
 
                     if methodDoc:
                         # get method return type from method documentation
